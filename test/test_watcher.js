@@ -10,7 +10,7 @@ describe('Watcher', function () {
   it("emits 'init' event on init", function (done) {
     var watcher = new Watcher('test/resources/simple.scss');
     watcher.run();
-    watcher.on('init', done);
+    watcher.once('init', done);
   });
 
   it("emits 'update' event on the input file change", function (done) {
@@ -29,7 +29,7 @@ describe('Watcher', function () {
     // We need to wait, otherwise - FS 'update' event is triggered immediately
     // (probably because we copy-paste the input file).
     setTimeout(function () {
-      watcher.on('update', done);
+      watcher.once('update', done);
       fs.writeFileSync(
         inputPath,
         inputContents.toString().replace('red', 'orange'),
@@ -55,7 +55,7 @@ describe('Watcher', function () {
     // We need to wait, otherwise - FS 'update' event is triggered immediately
     // (probably because we copy-paste the input files).
     setTimeout(function () {
-      watcher.on('update', done);
+      watcher.once('update', done);
       fs.writeFileSync(
         dependencyPath,
         dependencyContents.toString().replace('red', 'orange'),
