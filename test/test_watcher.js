@@ -2,17 +2,18 @@ var assert = require('assert');
 var fs = require('fs');
 var Watcher = require('../lib/watcher');
 
-describe('Watcher', function() {
+describe('Watcher', function () {
   // expect tests to be slow, due to nature of the CLI (invoking sub-processes)
   this.slow(500);
+  this.timeout(5000);
 
-  it("emits 'init' event on init", function(done) {
+  it("emits 'init' event on init", function (done) {
     var watcher = new Watcher('test/resources/simple.scss');
     watcher.run();
     watcher.on('init', done);
   });
 
-  it("emits 'update' event on the input file change", function(done) {
+  it("emits 'update' event on the input file change", function (done) {
     var inputPath = 'test/build/simple.scss';
     var inputContents = fs.readFileSync('test/resources/simple.scss');
 
@@ -24,13 +25,16 @@ describe('Watcher', function() {
 
     // We need to wait, otherwise - FS 'update' event is triggered immediately
     // (probably because we copy-paste the input file).
-    setTimeout(function() {
+    setTimeout(function () {
       watcher.on('update', done);
-      fs.writeFileSync(inputPath, inputContents.toString().replace('red', 'orange'));
+      fs.writeFileSync(
+        inputPath,
+        inputContents.toString().replace('red', 'orange'),
+      );
     }, 200);
   });
 
-  it("emits 'update' event on SCSS dependency file change", function(done) {
+  it("emits 'update' event on SCSS dependency file change", function (done) {
     var inputPath = 'test/build/complex.scss';
     var dependencyPath = 'test/build/complex-dep.scss';
     var dependencyContents = fs.readFileSync('test/resources/complex-dep.scss');
@@ -44,9 +48,12 @@ describe('Watcher', function() {
 
     // We need to wait, otherwise - FS 'update' event is triggered immediately
     // (probably because we copy-paste the input files).
-    setTimeout(function() {
+    setTimeout(function () {
       watcher.on('update', done);
-      fs.writeFileSync(dependencyPath, dependencyContents.toString().replace('red', 'orange'));
+      fs.writeFileSync(
+        dependencyPath,
+        dependencyContents.toString().replace('red', 'orange'),
+      );
     }, 200);
   });
 });
