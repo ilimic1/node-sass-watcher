@@ -61,7 +61,7 @@ describe('CLI', function () {
 
   describe('Arguments validation', function () {
     testCommand(
-      clientPath,
+      'node ' + clientPath,
       'shows help message if there are no arguments',
       function (err, stdout, stderr) {
         checkHelpMessage(stderr);
@@ -69,7 +69,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' --help',
+      'node ' + clientPath + ' --help',
       "shows help message if there is '--help' argument",
       function (err, stdout) {
         checkHelpMessage(stdout);
@@ -77,7 +77,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' -v -h',
+      'node ' + clientPath + ' -v -h',
       "shows help message if there is '-h' argument, even if arguments are invalid",
       function (err, stdout) {
         checkHelpMessage(stdout);
@@ -85,7 +85,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' --version',
+      'node ' + clientPath + ' --version',
       "shows version if there is '--version' argument",
       function (err, stdout) {
         assert.equal(stdout, version + '\n');
@@ -93,7 +93,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' -v -V',
+      'node ' + clientPath + ' -v -V',
       "shows version if there is '-V' argument, even if arguments are invalid",
       function (err, stdout) {
         assert.equal(stdout, version + '\n');
@@ -101,7 +101,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' -v',
+      'node ' + clientPath + ' -v',
       'expects at least one input path',
       function (err, stdout, stderr) {
         assert.equal(stderr, Client.prototype.messages.NO_INPUT_PATH + '\n');
@@ -109,7 +109,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' input-1.scss input-2.scss',
+      'node ' + clientPath + ' input-1.scss input-2.scss',
       'expects no more than one input path',
       function (err, stdout, stderr) {
         assert.equal(stderr, Client.prototype.messages.EXTRA_POS_ARGS + '\n');
@@ -117,7 +117,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' input.scss -o output-1.css -o output-2.css',
+      'node ' + clientPath + ' input.scss -o output-1.css -o output-2.css',
       'expects no more than one output path',
       function (err, stdout, stderr) {
         assert.equal(
@@ -128,7 +128,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' input.scss -r one/ -r two/',
+      'node ' + clientPath + ' input.scss -r one/ -r two/',
       'expects no more than one root dir',
       function (err, stdout, stderr) {
         assert.equal(stderr, Client.prototype.messages.EXTRA_ROOT_DIR + '\n');
@@ -136,7 +136,7 @@ describe('CLI', function () {
     );
 
     testCommand(
-      clientPath + ' input.scss -c "grep A" -c "grep B"',
+      'node ' + clientPath + ' input.scss -c "grep A" -c "grep B"',
       'expects no more than one command',
       function (err, stdout, stderr) {
         assert.equal(stderr, Client.prototype.messages.EXTRA_COMMAND + '\n');
@@ -150,7 +150,7 @@ describe('CLI', function () {
       var inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
-        clientPath + ' ' + inputPath,
+        'node ' + clientPath + ' ' + inputPath,
         'outputs input file contents to stdout',
         function (subprocess, done) {
           // file content should appear in the stdout
@@ -172,7 +172,7 @@ describe('CLI', function () {
       var outputPath = checkOutputFilePath('test/build/simple-wo-command.css');
 
       testCommandAsync(
-        clientPath + ' ' + inputPath + ' -o ' + outputPath,
+        'node ' + clientPath + ' ' + inputPath + ' -o ' + outputPath,
         'outputs input file contents to output file',
         function (subprocess, done) {
           var interval = setInterval(function () {
@@ -194,7 +194,7 @@ describe('CLI', function () {
       var inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
-        clientPath + ' ' + inputPath + ' -c "sed s/red/orange/"',
+        'node ' + clientPath + ' ' + inputPath + ' -c "sed s/red/orange/"',
         'outputs command results to stdout',
         function (subprocess, done) {
           // file content should appear in the stdout
@@ -245,7 +245,8 @@ describe('CLI', function () {
       var inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
-        clientPath +
+        'node ' +
+          clientPath +
           ' ' +
           inputPath +
           ' -c "sed s/red/orange/ | sed s/orange/green/"',
@@ -270,7 +271,8 @@ describe('CLI', function () {
       var outputPath = checkOutputFilePath('test/build/simple-redirect.css');
 
       testCommandAsync(
-        clientPath +
+        'node ' +
+          clientPath +
           ' ' +
           inputPath +
           ' -c "sed s/red/orange/ | sed s/orange/green/ > ' +
