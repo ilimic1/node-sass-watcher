@@ -1,9 +1,10 @@
 var assert = require('assert');
+var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var Client = require('../lib/client');
 var version = require('../package').version;
-var clientPath = 'bin/node-sass-watcher';
+var clientPath = path.join('bin', 'node-sass-watcher');
 
 function testCommand(command, message, check) {
   it(message + ' (command: ' + command + ')', function (done) {
@@ -215,7 +216,8 @@ describe('CLI', function () {
       var outputPath = checkOutputFilePath('test/build/simple-w-command.css');
 
       testCommandAsync(
-        clientPath +
+        'node ' +
+          clientPath +
           ' ' +
           inputPath +
           ' -c "sed s/red/orange/" -o ' +
