@@ -14,7 +14,8 @@ describe('Watcher', function () {
   });
 
   it("emits 'update' event on the input file change", function (done) {
-    this.slow(1000);
+    this.slow(1500);
+    this.timeout(6000);
 
     var inputPath = 'test/build/simple.scss';
     var inputContents = fs.readFileSync('test/resources/simple.scss');
@@ -33,11 +34,12 @@ describe('Watcher', function () {
         inputPath,
         inputContents.toString().replace('red', 'orange'),
       );
-    }, 500);
+    }, 1000);
   });
 
   it("emits 'update' event on SCSS dependency file change", function (done) {
-    this.slow(1000);
+    this.slow(1500);
+    this.timeout(6000);
 
     var inputPath = 'test/build/complex.scss';
     var dependencyPath = 'test/build/complex-dep.scss';
@@ -58,6 +60,6 @@ describe('Watcher', function () {
         dependencyPath,
         dependencyContents.toString().replace('red', 'orange'),
       );
-    }, 500);
+    }, 1000);
   });
 });
