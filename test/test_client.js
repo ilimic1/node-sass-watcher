@@ -200,8 +200,12 @@ describe('CLI', function () {
           // file content should appear in the stdout
           subprocess.stdout.on('data', function (data) {
             assert.equal(
-              data.toString(),
-              fs.readFileSync(inputPath).toString().replace('red', 'orange'),
+              data.toString().replace(/\r\n/g, '\n'),
+              fs
+                .readFileSync(inputPath)
+                .toString()
+                .replace('red', 'orange')
+                .replace(/\r\n/g, '\n'),
             );
             subprocess.kill();
             done();
@@ -227,8 +231,12 @@ describe('CLI', function () {
           var interval = setInterval(function () {
             if (fs.existsSync(outputPath) && fs.statSync(outputPath)['size']) {
               assert.equal(
-                fs.readFileSync(inputPath).toString().replace('red', 'orange'),
-                fs.readFileSync(outputPath).toString(),
+                fs
+                  .readFileSync(inputPath)
+                  .toString()
+                  .replace('red', 'orange')
+                  .replace(/\r\n/g, '\n'),
+                fs.readFileSync(outputPath).toString().replace(/\r\n/g, '\n'),
               );
               clearInterval(interval);
               done();
@@ -255,8 +263,12 @@ describe('CLI', function () {
           // file content should appear in the stdout
           subprocess.stdout.on('data', function (data) {
             assert.equal(
-              data.toString(),
-              fs.readFileSync(inputPath).toString().replace('red', 'green'),
+              data.toString().replace(/\r\n/g, '\n'),
+              fs
+                .readFileSync(inputPath)
+                .toString()
+                .replace('red', 'green')
+                .replace(/\r\n/g, '\n'),
             );
             subprocess.kill();
             done();
@@ -283,8 +295,12 @@ describe('CLI', function () {
           var interval = setInterval(function () {
             if (fs.existsSync(outputPath) && fs.statSync(outputPath)['size']) {
               assert.equal(
-                fs.readFileSync(inputPath).toString().replace('red', 'green'),
-                fs.readFileSync(outputPath).toString(),
+                fs
+                  .readFileSync(inputPath)
+                  .toString()
+                  .replace('red', 'green')
+                  .replace(/\r\n/g, '\n'),
+                fs.readFileSync(outputPath).toString().replace(/\r\n/g, '\n'),
               );
               clearInterval(interval);
               done();
