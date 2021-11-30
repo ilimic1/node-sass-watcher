@@ -1,6 +1,5 @@
-var assert = require('assert');
-var fs = require('fs');
-var Watcher = require('../lib/watcher');
+const fs = require('fs');
+const Watcher = require('../lib/watcher');
 
 describe('Watcher', function () {
   // expect tests to be slow, due to nature of the CLI (invoking sub-processes)
@@ -8,7 +7,7 @@ describe('Watcher', function () {
   this.timeout(5000);
 
   it("emits 'init' event on init", function (done) {
-    var watcher = new Watcher('test/resources/simple.scss');
+    const watcher = new Watcher('test/resources/simple.scss');
     watcher.run();
     watcher.once('init', done);
   });
@@ -17,13 +16,13 @@ describe('Watcher', function () {
     this.slow(1500);
     this.timeout(6000);
 
-    var inputPath = 'test/build/simple.scss';
-    var inputContents = fs.readFileSync('test/resources/simple.scss');
+    const inputPath = 'test/build/simple.scss';
+    const inputContents = fs.readFileSync('test/resources/simple.scss');
 
     // Copy-paste input file to avoid original file modification
     fs.writeFileSync(inputPath, inputContents);
 
-    var watcher = new Watcher(inputPath);
+    const watcher = new Watcher(inputPath);
     watcher.run();
 
     // We need to wait, otherwise - FS 'update' event is triggered immediately
@@ -41,15 +40,17 @@ describe('Watcher', function () {
     this.slow(1500);
     this.timeout(6000);
 
-    var inputPath = 'test/build/complex.scss';
-    var dependencyPath = 'test/build/complex-dep.scss';
-    var dependencyContents = fs.readFileSync('test/resources/complex-dep.scss');
+    const inputPath = 'test/build/complex.scss';
+    const dependencyPath = 'test/build/complex-dep.scss';
+    const dependencyContents = fs.readFileSync(
+      'test/resources/complex-dep.scss',
+    );
 
     // Copy-paste input files to avoid original files modification
     fs.writeFileSync(inputPath, fs.readFileSync('test/resources/complex.scss'));
     fs.writeFileSync(dependencyPath, dependencyContents);
 
-    var watcher = new Watcher(inputPath);
+    const watcher = new Watcher(inputPath);
     watcher.run();
 
     // We need to wait, otherwise - FS 'update' event is triggered immediately

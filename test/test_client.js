@@ -1,10 +1,10 @@
-var assert = require('assert');
-var path = require('path');
-var fs = require('fs');
-var exec = require('child_process').exec;
-var Client = require('../lib/client');
-var version = require('../package').version;
-var clientPath = path.join('bin', 'node-sass-watcher');
+const assert = require('assert');
+const path = require('path');
+const fs = require('fs');
+const exec = require('child_process').exec;
+const Client = require('../lib/client');
+const version = require('../package').version;
+const clientPath = path.join('bin', 'node-sass-watcher');
 
 function testCommand(command, message, check) {
   it(message + ' (command: ' + command + ')', function (done) {
@@ -17,7 +17,7 @@ function testCommand(command, message, check) {
 
 function testCommandAsync(command, message, check) {
   it(message + ' (command: ' + command + ')', function (done) {
-    var subprocess = exec(command);
+    const subprocess = exec(command);
     check(subprocess, done);
   });
 }
@@ -166,14 +166,16 @@ describe('CLI', function () {
 
     // No command, output to file
     (function () {
-      var inputPath = 'test/resources/simple.scss';
-      var outputPath = checkOutputFilePath('test/build/simple-wo-command.css');
+      const inputPath = 'test/resources/simple.scss';
+      const outputPath = checkOutputFilePath(
+        'test/build/simple-wo-command.css',
+      );
 
       testCommandAsync(
         'node ' + clientPath + ' ' + inputPath + ' -o ' + outputPath,
         'outputs input file contents to output file',
         function (subprocess, done) {
-          var interval = setInterval(function () {
+          const interval = setInterval(function () {
             if (fs.existsSync(outputPath) && fs.statSync(outputPath)['size']) {
               assert.equal(
                 fs.readFileSync(inputPath).toString(),
@@ -189,7 +191,7 @@ describe('CLI', function () {
 
     // With command, output to stout
     (function () {
-      var inputPath = 'test/resources/simple.scss';
+      const inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
         'node ' + clientPath + ' ' + inputPath + ' -c "sed s/red/orange/"',
@@ -214,8 +216,8 @@ describe('CLI', function () {
 
     // With command, output to file
     (function () {
-      var inputPath = 'test/resources/simple.scss';
-      var outputPath = checkOutputFilePath('test/build/simple-w-command.css');
+      const inputPath = 'test/resources/simple.scss';
+      const outputPath = checkOutputFilePath('test/build/simple-w-command.css');
 
       testCommandAsync(
         'node ' +
@@ -226,7 +228,7 @@ describe('CLI', function () {
           outputPath,
         'outputs command results to output file',
         function (subprocess, done) {
-          var interval = setInterval(function () {
+          const interval = setInterval(function () {
             if (fs.existsSync(outputPath) && fs.statSync(outputPath)['size']) {
               assert.equal(
                 fs
@@ -248,7 +250,7 @@ describe('CLI', function () {
   describe('Complex run', function () {
     // Pipe
     (function () {
-      var inputPath = 'test/resources/simple.scss';
+      const inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
         'node ' +
@@ -277,8 +279,8 @@ describe('CLI', function () {
 
     // Output redirect
     (function () {
-      var inputPath = 'test/resources/simple.scss';
-      var outputPath = checkOutputFilePath('test/build/simple-redirect.css');
+      const inputPath = 'test/resources/simple.scss';
+      const outputPath = checkOutputFilePath('test/build/simple-redirect.css');
 
       testCommandAsync(
         'node ' +
