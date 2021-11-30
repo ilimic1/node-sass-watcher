@@ -43,7 +43,7 @@ function checkOutputFilePath(filePath) {
 function checkHelpMessage(output) {
   assert.equal(
     output.split('\n')[0],
-    'Usage: node-sass-watcher <input.scss> [options]',
+    'Usage: node-sass-watcher <input> [options]',
   );
   assert.ok(output.indexOf('Error:') == -1);
 }
@@ -104,7 +104,7 @@ describe('CLI', function () {
       'node ' + clientPath + ' -v',
       'expects at least one input path',
       function (err, stdout, stderr) {
-        assert.equal(stderr, Client.prototype.messages.NO_INPUT_PATH + '\n');
+        assert.equal(stderr, Client.messages.NO_INPUT_PATH + '\n');
       },
     );
 
@@ -112,7 +112,8 @@ describe('CLI', function () {
       'node ' + clientPath + ' input-1.scss input-2.scss',
       'expects no more than one input path',
       function (err, stdout, stderr) {
-        assert.equal(stderr, Client.prototype.messages.EXTRA_POS_ARGS + '\n');
+        const lines = stderr.split('\n').filter((line) => line.length > 0);
+        assert.equal(lines[lines.length - 1], 'Unknown argument: input-2.scss');
       },
     );
 
@@ -120,10 +121,7 @@ describe('CLI', function () {
       'node ' + clientPath + ' input.scss -o output-1.css -o output-2.css',
       'expects no more than one output path',
       function (err, stdout, stderr) {
-        assert.equal(
-          stderr,
-          Client.prototype.messages.EXTRA_OUTPUT_PATH + '\n',
-        );
+        assert.equal(stderr, Client.messages.EXTRA_OUTPUT_PATH + '\n');
       },
     );
 
@@ -131,7 +129,7 @@ describe('CLI', function () {
       'node ' + clientPath + ' input.scss -r one/ -r two/',
       'expects no more than one root dir',
       function (err, stdout, stderr) {
-        assert.equal(stderr, Client.prototype.messages.EXTRA_ROOT_DIR + '\n');
+        assert.equal(stderr, Client.messages.EXTRA_ROOT_DIR + '\n');
       },
     );
 
@@ -139,7 +137,7 @@ describe('CLI', function () {
       'node ' + clientPath + ' input.scss -c "grep A" -c "grep B"',
       'expects no more than one command',
       function (err, stdout, stderr) {
-        assert.equal(stderr, Client.prototype.messages.EXTRA_COMMAND + '\n');
+        assert.equal(stderr, Client.messages.EXTRA_COMMAND + '\n');
       },
     );
   });
@@ -147,7 +145,7 @@ describe('CLI', function () {
   describe('Simple run', function () {
     // No command, output to stout
     (function () {
-      var inputPath = 'test/resources/simple.scss';
+      const inputPath = 'test/resources/simple.scss';
 
       testCommandAsync(
         'node ' + clientPath + ' ' + inputPath,
