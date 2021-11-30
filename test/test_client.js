@@ -292,7 +292,7 @@ describe('CLI', function () {
           '"',
         'outputs command results to a file, using > in the command',
         function (subprocess, done) {
-          var interval = setInterval(function () {
+          const interval = setInterval(function () {
             if (fs.existsSync(outputPath) && fs.statSync(outputPath)['size']) {
               assert.equal(
                 fs

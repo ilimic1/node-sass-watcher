@@ -62,19 +62,19 @@ Example: `node-sass` → `autoprefixer`.
 ```js
 // watch-it.js
 
-var fs = require('fs');
-var sass = require('node-sass');
-var postcss = require('postcss');
-var autoprefixer = require('autoprefixer');
-var Watcher = require('node-sass-watcher');
+const fs = require('fs');
+const sass = require('node-sass');
+const postcss = require('postcss');
+const autoprefixer = require('autoprefixer');
+const Watcher = require('node-sass-watcher');
 
 // Input variables
-var inputFile = process.argv[2];
-var outputFile = process.argv[3];
-var supportedBrowsers = process.argv[4];
+const inputFile = process.argv[2];
+const outputFile = process.argv[3];
+const supportedBrowsers = process.argv[4];
 
 // Options
-var watcherOptions = {
+const watcherOptions = {
   verbosity: 1,
 }
 
@@ -88,7 +88,7 @@ function render() {
       return;
     }
 
-    var processor = postcss([
+    const processor = postcss([
       autoprefixer({
         browsers: supportedBrowsers.split(/,\s*/g)
       })
@@ -109,7 +109,7 @@ function render() {
 }
 
 // Start watching
-var watcher = new Watcher(inputFile, watcherOptions);
+const watcher = new Watcher(inputFile, watcherOptions);
 watcher.on('init', render);
 watcher.on('update', render);
 watcher.run();
