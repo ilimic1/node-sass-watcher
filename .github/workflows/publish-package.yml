@@ -1,0 +1,54 @@
+on:
+  release:
+    types: [published]
+
+name: Publish Package
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        node-version:
+          - "12"
+          - "14"
+          - "16"
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - run: npm install
+
+      - run: npm test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@anteprimorac"
+
+      - name: Fix package name
+        run: 'node -e "const fs = require(\"fs\"); const path = require(\"path\"); const packageJson = require(\"./package.json\"); fs.writeFileSync(path.join(__dirname, \"package.json\"), JSON.stringify({ ...packageJson, name: \"@anteprimorac/node-sass-watcher\" }, null, 2));"'
+
+      - run: npm install
+
+      - run: yarn publish --new-version ${{ github.event.release.tag_name }} --no-git-tag-version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
