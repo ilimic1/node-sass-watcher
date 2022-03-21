@@ -1,8 +1,6 @@
 # node-sass-watcher
 
-[![Build Status](https://travis-ci.org/kottenator/node-sass-watcher.svg?branch=master)](https://travis-ci.org/kottenator/node-sass-watcher)
-
-<img src="https://raw.githubusercontent.com/kottenator/node-sass-watcher/master/media/node-sass-watcher-logo.png" alt="Logo" width="270">
+[![Test](https://github.com/anteprimorac/node-sass-watcher/actions/workflows/test.yml/badge.svg)](https://github.com/anteprimorac/node-sass-watcher/actions/workflows/test.yml)
 
 SCSS watcher with post-processing.
 
